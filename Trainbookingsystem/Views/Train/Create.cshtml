@@ -1,0 +1,72 @@
+﻿@model Trainbookingsystem.Models.Train
+
+
+<div class="container">
+    <h2 class="display-4 mb-4 text-center text-primary">Create Train</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Train Name:</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Photo" class="control-label">Train Photo:</label>
+                <input type="file" id="Photo" name="Photo" class="form-control-file" accept="image/*" onchange="previewImage(event)" />
+                <span asp-validation-for="Photo" class="text-danger"></span>
+                <div id="imagePreview" class="mt-2"></div> <!-- Image preview container -->
+            </div>
+            <div class="form-group">
+                <label asp-for="Origin" class="control-label">Origin:</label>
+                <input asp-for="Origin" class="form-control" />
+                <span asp-validation-for="Origin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Destination" class="control-label">Destination:</label>
+                <input asp-for="Destination" class="form-control" />
+                <span asp-validation-for="Destination" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Schedule" class="control-label">Schedule:</label>
+                <input asp-for="Schedule" class="form-control" type="datetime-local" id="scheduleInput" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                <span asp-validation-for="Schedule" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AvailableSeats" class="control-label">Available Seats:</label>
+                <input asp-for="AvailableSeats" class="form-control" type="number" min="0" />
+                <span asp-validation-for="AvailableSeats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label">Price:</label>
+                <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <input class="form-check-input" asp-for="IsAC" />
+                <label class="form-check-label" asp-for="IsAC">AC:</label>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary mr-2">Create</button>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Function to display image preview
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('imagePreview');
+                output.innerHTML = '<img src="' + reader.result + '" class="img-fluid" style="max-height: 200px;" />';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+}

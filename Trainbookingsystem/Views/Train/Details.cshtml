@@ -1,0 +1,46 @@
+﻿@model Trainbookingsystem.Models.Train
+
+@{
+    ViewData["Title"] = "Train Details";
+}
+
+<h1 class="mb-4">Train Details</h1>
+
+<div class="card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Train Name</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+            <dt class="col-sm-3">Train Photo</dt>
+            <dd class="col-sm-9">
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" alt="@Model.Name" class="img-fluid rounded" />
+            </dd>
+            <dt class="col-sm-3">Origin</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Origin)</dd>
+            <dt class="col-sm-3">Destination</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Destination)</dd>
+            <dt class="col-sm-3">Schedule</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Schedule)</dd>
+            <dt class="col-sm-3">Available Seats</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.AvailableSeats)</dd>
+            <dt class="col-sm-3">AC Status</dt>
+            <dd class="col-sm-9">
+                @if (Model.IsAC)
+                {
+                    <text>AC</text>
+                }
+                else
+                {
+                    <text>Non-AC</text>
+                }
+            </dd>
+            <dt class="col-sm-3">Price</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Price)</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.TrainId" class="btn btn-primary mr-2">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

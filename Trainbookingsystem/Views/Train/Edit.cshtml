@@ -1,0 +1,76 @@
+﻿@model Trainbookingsystem.Models.Train
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Train</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="TrainId" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label">Train Name:</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Origin" class="control-label">Origin:</label>
+                    <input asp-for="Origin" class="form-control" />
+                    <span asp-validation-for="Origin" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Destination" class="control-label">Destination:</label>
+                    <input asp-for="Destination" class="form-control" />
+                    <span asp-validation-for="Destination" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Schedule" class="control-label">Schedule:</label>
+                    <input asp-for="Schedule" class="form-control" />
+                    <span asp-validation-for="Schedule" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AvailableSeats" class="control-label">Available Seats:</label>
+                    <input asp-for="AvailableSeats" class="form-control" />
+                    <span asp-validation-for="AvailableSeats" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label">Price:</label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IsAC" class="control-label">AC Status:</label>
+                    <div class="form-check">
+                        <input asp-for="IsAC" class="form-check-input" />
+                        <label class="form-check-label" asp-for="IsAC">AC</label>
+                    </div>
+                    <span asp-validation-for="IsAC" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Current Photo:</label>
+                    @if (Model.Photo != null)
+                    {
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" alt="Current Photo" class="img-fluid" />
+                    }
+                    else
+                    {
+                        <p>No photo available</p>
+                    }
+                </div>
+                <div class="form-group">
+                    <label asp-for="Photo" class="control-label">New Photo:</label>
+                    <input type="file" asp-for="Photo" class="form-control-file" />
+                    <span asp-validation-for="Photo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

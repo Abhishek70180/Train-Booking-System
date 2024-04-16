@@ -1,0 +1,65 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+<style>
+    body{
+        background-image: url('https://cdn.pixabay.com/photo/2016/07/29/19/19/railway-1555348_640.jpg');
+        background-size: cover;
+        background-repeat:no-repeat;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5" style="background-color: #f8f9fa; border-radius: 15px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+                <div class="card-body">
+                    <h1 class="card-title text-center" style="color: #343a40;">@ViewData["Title"]</h1>
+                    <hr />
+                    <form id="account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <label asp-for="Input.Email" class="form-label" style="color: #007bff;">Email</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                            <label asp-for="Input.Password" class="form-label" style="color: #007bff;">Password</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="checkbox mb-3">
+                            <label asp-for="Input.RememberMe" class="form-label">
+                                <input class="form-check-input" asp-for="Input.RememberMe" />
+                                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                            </label>
+                        </div>
+                        <div class="text-center">
+                            <button id="login-submit" type="submit" class="btn btn-primary" style="background-color: #28a745; border-color: #28a745;">Log in</button>
+                        </div>
+                    </form>
+                    <hr />
+                    <div class="text-center">
+                        @* <p>
+                            <a id="forgot-password" asp-page="./ForgotPassword" style="color: #dc3545;">Forgot your password?</a>
+                        </p> *@
+                        <p>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" style="color: #dc3545;">Register as a new user</a>
+                        </p>
+                       @*  <p>
+                            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" style="color: #17a2b8;">Resend email confirmation</a>
+                        </p> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
