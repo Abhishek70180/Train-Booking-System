@@ -19,9 +19,10 @@
 
     <div class="form-group">
         <label asp-for="PassengerEmail" class="control-label">Passenger Email</label>
-        <input asp-for="PassengerEmail" class="form-control" />
+        <input asp-for="PassengerEmail" class="form-control" readonly />
         <span asp-validation-for="PassengerEmail" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="NumberOfTickets" class="control-label">Number of Tickets</label>
         <input type="number" id="numberOfTickets" asp-for="NumberOfTickets" class="form-control" min="1" max="10" oninput="calculateTotalPrice()" />
