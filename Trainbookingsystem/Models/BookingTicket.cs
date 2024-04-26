@@ -22,7 +22,7 @@ namespace Trainbookingsystem.Models
         public string PassengerEmail { get; set; }
 
         [Required(ErrorMessage = "Number of tickets is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Number of tickets must be at least 1.")]
+        [Range(1, 10, ErrorMessage = "Number of tickets must be between 1 and 10.")]
         public int NumberOfTickets { get; set; }
 
         [Required(ErrorMessage = "Total price is required.")]
