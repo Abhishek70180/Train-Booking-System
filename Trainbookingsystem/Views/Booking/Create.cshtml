@@ -22,11 +22,11 @@
         <input asp-for="PassengerEmail" class="form-control" />
         <span asp-validation-for="PassengerEmail" class="text-danger"></span>
     </div>
-
     <div class="form-group">
         <label asp-for="NumberOfTickets" class="control-label">Number of Tickets</label>
-        <input type="number" id="numberOfTickets" asp-for="NumberOfTickets" class="form-control" min="1" oninput="calculateTotalPrice()" />
+        <input type="number" id="numberOfTickets" asp-for="NumberOfTickets" class="form-control" min="1" max="10" oninput="calculateTotalPrice()" />
         <span asp-validation-for="NumberOfTickets" class="text-danger"></span>
+        <span id="maxTicketsMessage" class="text-danger" style="display:none;">Maximum 10 tickets can be booked.</span>
     </div>
 
     <div class="form-group">
@@ -38,15 +38,21 @@
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
 
-@section Scripts {
-    <script>
-        function calculateTotalPrice() {
-            var numberOfTickets = document.getElementById("numberOfTickets").value;
-            var ticketPrice = '@ViewBag.TicketPrice'; // Get ticket price from ViewBag
+<script>
+    function calculateTotalPrice() {
+        var numberOfTickets = document.getElementById("numberOfTickets").value;
+        var ticketPrice = '@ViewBag.TicketPrice'; // Get ticket price from ViewBag
 
-            var totalPrice = parseFloat(numberOfTickets) * parseFloat(ticketPrice); // Parse strings to float
+        var totalPrice = parseFloat(numberOfTickets) * parseFloat(ticketPrice); // Parse strings to float
 
-            document.getElementById("totalPrice").value = totalPrice.toFixed(2); // Adjust decimals as needed
+        document.getElementById("totalPrice").value = totalPrice.toFixed(2); // Adjust decimals as needed
+
+        // Check if number of tickets exceeds 10
+        if (parseInt(numberOfTickets) > 10) {
+            document.getElementById("maxTicketsMessage").style.display = "block";
+        } else {
+            document.getElementById("maxTicketsMessage").style.display = "none";
         }
-    </script>
-}
+    }
+</script>
+

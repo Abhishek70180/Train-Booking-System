@@ -43,23 +43,38 @@ namespace Trainbookingsystem.Controllers
             {
                 TrainId = trainId
             };
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                viewModel.PassengerEmail = userEmail;
+            }
+
             return View(viewModel);
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(BookingCreateViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                if (string.IsNullOrWhiteSpace(viewModel.PassengerName))
+                {
+                    ModelState.AddModelError("PassengerName", "Passenger Name is required.");
+                    return View(viewModel);
+                }
+
                 var train = await _context.Trains.FindAsync(viewModel.TrainId);
                 if (train == null)
                 {
                     return NotFound();
                 }
+
                 if (train.AvailableSeats < viewModel.NumberOfTickets)
                 {
                     ModelState.AddModelError("", "Not enough available seats.");
                     return View(viewModel);
                 }
+
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var booking = new BookingTicket
                 {
@@ -94,10 +109,17 @@ namespace Trainbookingsystem.Controllers
                 string smtpUsername = "abhithakur2222@outlook.com";
                 string smtpPassword = "Abhishek@123";
 
+                var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    throw new ApplicationException("User email address not found.");
+                }
+
                 using (MailMessage mail = new MailMessage())
                 {
                     mail.From = new MailAddress(smtpUsername);
-                    mail.To.Add("abhithakur2416@gmail.com");
+                    mail.To.Add(userEmail); // Send email to the logged-in user
                     mail.Subject = "New Booking Created";
                     mail.Body = "A new booking has been created with the following details:\n" +
                                 "Passenger Name: " + booking.PassengerName + "\n" +
