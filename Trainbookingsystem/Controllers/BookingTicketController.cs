@@ -119,7 +119,7 @@ namespace Trainbookingsystem.Controllers
                 using (MailMessage mail = new MailMessage())
                 {
                     mail.From = new MailAddress(smtpUsername);
-                    mail.To.Add(userEmail); // Send email to the logged-in user
+                    mail.To.Add(userEmail);
                     mail.Subject = "New Booking Created";
                     mail.Body = "A new booking has been created with the following details:\n" +
                                 "Passenger Name: " + booking.PassengerName + "\n" +

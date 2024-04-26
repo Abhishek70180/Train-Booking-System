@@ -43,35 +43,86 @@ namespace Trainbookingsystem.Controllers
             {
                 return NotFound();
             }
-            await SendCancellationEmail(booking);
             _context.BookingTickets.Remove(booking);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        private async Task SendCancellationEmail(BookingTicket booking)
+        public async Task<IActionResult> Edit(int? id)
         {
-            try
+            if (id == null)
             {
-                string smtpServer = "smtp-mail.outlook.com";
-                int smtpPort = 587;
-                string smtpUsername = "abhithakur2222@outlook.com";
-                string smtpPassword = "Abhishek@123";
-
-                MailMessage mail = new MailMessage();
-                mail.From = new MailAddress(smtpUsername);
-                mail.To.Add(booking.PassengerEmail);
-                mail.Subject = "Booking Cancellation Notification";
-                mail.Body = $"Dear {booking.PassengerName},\n\nYour booking with Booking ID {booking.BookingId} has been cancelled.\n\nThank you.";
-
-                SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort);
-                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-                smtpClient.EnableSsl = true;
-                await smtpClient.SendMailAsync(mail);
+                return NotFound();
             }
-            catch (Exception ex)
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var booking = await _context.BookingTickets
+                .FirstOrDefaultAsync(b => b.BookingId == id && b.UserId == userId);
+
+            if (booking == null)
             {
-                ViewBag.Error = "An error occurred while sending email: " + ex.Message;
+                return NotFound();
+
             }
+
+            return View(booking);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, BookingTicket booking)
+        {
+            if (id != booking.BookingId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(booking);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!BookingExists(booking.BookingId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(booking);
+        }
+
+        private bool BookingExists(int id)
+        {
+            return _context.BookingTickets.Any(b => b.BookingId == id);
+        }
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var booking = await _context.BookingTickets
+                .FirstOrDefaultAsync(b => b.BookingId == id && b.UserId == userId);
+
+            if (booking == null)
+            {
+                return NotFound();
+            }
+            var train = await _context.Trains.FindAsync(booking.TrainId);
+            if (train != null)
+            {
+                train.AvailableSeats += booking.NumberOfTickets;
+                _context.Update(train);
+            }
+            _context.BookingTickets.Remove(booking);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
