@@ -37,14 +37,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="AvailableSeats" class="control-label">Available Seats:</label>
-                <input asp-for="AvailableSeats" class="form-control" type="number" min="0" />
+                <input asp-for="AvailableSeats" class="form-control" type="number" min="100" />
                 <span asp-validation-for="AvailableSeats" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label">Price:</label>
-                <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                <input asp-for="Price" class="form-control" type="number" min="100" max="600" required />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
+
             <div class="form-group form-check">
                 <input class="form-check-input" asp-for="IsAC" />
                 <label class="form-check-label" asp-for="IsAC">AC:</label>
@@ -59,7 +60,6 @@
 
 @section Scripts {
     <script>
-        // Function to display image preview
         function previewImage(event) {
             var reader = new FileReader();
             reader.onload = function () {

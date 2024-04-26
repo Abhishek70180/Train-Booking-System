@@ -50,7 +50,7 @@
                     </div>
                     <span asp-validation-for="IsAC" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+               @*  <div class="form-group">
                     <label class="control-label">Current Photo:</label>
                     @if (Model.Photo != null)
                     {
@@ -60,7 +60,7 @@
                     {
                         <p>No photo available</p>
                     }
-                </div>
+                </div> *@
                 <div class="form-group">
                     <label asp-for="Photo" class="control-label">New Photo:</label>
                     <input type="file" asp-for="Photo" class="form-control-file" />

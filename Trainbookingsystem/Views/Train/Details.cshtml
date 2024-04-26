@@ -13,7 +13,14 @@
             <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
             <dt class="col-sm-3">Train Photo</dt>
             <dd class="col-sm-9">
-                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" alt="@Model.Name" class="img-fluid rounded" />
+                @if (Model.Photo != null)
+                {
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" alt="@Model.Name" class="img-fluid rounded" />
+                }
+                else
+                {
+                    <span>No photo available</span>
+                }
             </dd>
             <dt class="col-sm-3">Origin</dt>
             <dd class="col-sm-9">@Html.DisplayFor(model => model.Origin)</dd>

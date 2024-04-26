@@ -36,9 +36,16 @@
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.Name)</td>
                     <td>
-                        <a href="#" class="photo-link" data-img="@Convert.ToBase64String(item.Photo)">
-                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Photo)" alt="Train Photo" class="img-thumbnail" style="max-width: 100px;" />
-                        </a>
+                        @if (item.Photo != null && item.Photo.Length > 0)
+                        {
+                            <a href="#" class="photo-link" data-img="@Convert.ToBase64String(item.Photo)">
+                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.Photo)" alt="Train Photo" class="img-thumbnail" style="max-width: 100px;" />
+                            </a>
+                        }
+                        else
+                        {
+                            <span>No photo available</span>
+                        }
                     </td>
                     <td>@Html.DisplayFor(modelItem => item.Origin)</td>
                     <td>@Html.DisplayFor(modelItem => item.Destination)</td>
