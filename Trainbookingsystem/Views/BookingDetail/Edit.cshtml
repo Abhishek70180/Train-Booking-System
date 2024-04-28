@@ -6,13 +6,9 @@
 
 <h1>Edit Booking</h1>
 
-<form asp-action="Edit">
+<form asp-action="Edit" method="post">
     <input type="hidden" asp-for="BookingId" />
-
-    <div class="form-group">
-        <label asp-for="TrainId" class="control-label">Train ID</label>
-        <input asp-for="TrainId" class="form-control" readonly />
-    </div>
+    <input type="hidden" asp-for="TrainId" />
 
     <div class="form-group">
         <label asp-for="PassengerName" class="control-label">Passenger Name</label>
@@ -22,28 +18,42 @@
 
     <div class="form-group">
         <label asp-for="PassengerEmail" class="control-label">Passenger Email</label>
-        <input asp-for="PassengerEmail" class="form-control" />
+        <input asp-for="PassengerEmail" class="form-control" readonly />
         <span asp-validation-for="PassengerEmail" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="NumberOfTickets" class="control-label">Number of Tickets</label>
-        <input asp-for="NumberOfTickets" class="form-control" />
+        <input type="number" id="numberOfTickets" asp-for="NumberOfTickets" class="form-control" min="1" max="10" oninput="calculateTotalPrice()" />
         <span asp-validation-for="NumberOfTickets" class="text-danger"></span>
+        <span id="maxTicketsMessage" class="text-danger" style="display:none;">Maximum 10 tickets can be booked.</span>
     </div>
 
     <div class="form-group">
         <label asp-for="TotalPrice" class="control-label">Total Price</label>
-        <input asp-for="TotalPrice" class="form-control" readonly />
+        <input id="totalPrice" asp-for="TotalPrice" class="form-control" readonly />
+        <span asp-validation-for="TotalPrice" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="BookingTime" class="control-label">Booking Time</label>
-        <input asp-for="BookingTime" class="form-control" readonly />
-    </div>
-
-    <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>
+
+@section Scripts {
+    <script>
+        function calculateTotalPrice() {
+            var numberOfTickets = document.getElementById("numberOfTickets").value;
+            var ticketPrice = '@ViewBag.TicketPrice'; // Get ticket price from ViewBag
+
+            var totalPrice = parseFloat(numberOfTickets) * parseFloat(ticketPrice); // Parse strings to float
+
+            document.getElementById("totalPrice").value = totalPrice.toFixed(2); // Adjust decimals as needed
+
+            // Check if number of tickets exceeds 10
+            if (parseInt(numberOfTickets) > 10) {
+                document.getElementById("maxTicketsMessage").style.display = "block";
+            } else {
+                document.getElementById("maxTicketsMessage").style.display = "none";
+            }
+        }
+    </script>
+}
