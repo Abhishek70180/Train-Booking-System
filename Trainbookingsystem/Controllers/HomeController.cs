@@ -31,12 +31,12 @@ namespace Trainbookingsystem.Controllers
             {
                 trains = trains.Where(t => t.Name.Contains(searchString)
                                          || t.Origin.Contains(searchString)
-                                         || t.Destination.Contains(searchString));
+                                         || t.Destination.Contains(searchString)
+                                         || t.Destination.ToString().Contains(searchString)
+                                         || t.Schedule.ToString().Contains(searchString));
             }
-
             return View(await trains.ToListAsync());
         }
-
         public IActionResult Privacy()
         {
             return View();
