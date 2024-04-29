@@ -20,13 +20,11 @@ namespace Trainbookingsystem.Controllers
         {
             _context = context;
         }
-
         public IActionResult Index()
         {
             var bookings = _context.BookingTickets.ToList();
             return View(bookings);
         }
-
         public IActionResult Create(int trainId)
         {
             var train = _context.Trains.FirstOrDefault(t => t.TrainId == trainId);
@@ -38,7 +36,6 @@ namespace Trainbookingsystem.Controllers
             {
                 ViewBag.TicketPrice = 0;
             }
-
             var viewModel = new BookingCreateViewModel
             {
                 TrainId = trainId
@@ -48,7 +45,6 @@ namespace Trainbookingsystem.Controllers
             {
                 viewModel.PassengerEmail = userEmail;
             }
-
             return View(viewModel);
         }
 
@@ -108,26 +104,18 @@ namespace Trainbookingsystem.Controllers
                 int smtpPort = 587;
                 string smtpUsername = "abhithakur2222@outlook.com";
                 string smtpPassword = "Abhishek@123";
-
-                var userEmail = User.FindFirstValue(ClaimTypes.Email);
-
-                if (string.IsNullOrEmpty(userEmail))
-                {
-                    throw new ApplicationException("User email address not found.");
-                }
-
+                var userEmail = booking.PassengerEmail;
                 using (MailMessage mail = new MailMessage())
                 {
                     mail.From = new MailAddress(smtpUsername);
                     mail.To.Add(userEmail);
                     mail.Subject = "New Booking Created";
-                    mail.Body = "A new booking has been created with the following details:\n" +
-                                "Passenger Name: " + booking.PassengerName + "\n" +
-                                "Passenger Email: " + booking.PassengerEmail + "\n" +
-                                "Number of Tickets: " + booking.NumberOfTickets + "\n" +
-                                "Total Price: " + booking.TotalPrice.ToString("C2") + "\n" +
-                                "Booking Time: " + booking.BookingTime.ToString("yyyy-MM-dd HH:mm");
-
+                    mail.Body = $"A new booking has been created with the following details:\n" +
+                                $"Passenger Name: {booking.PassengerName}\n" +
+                                $"Passenger Email: {booking.PassengerEmail}\n" +
+                                $"Number of Tickets: {booking.NumberOfTickets}\n" +
+                                $"Total Price: {booking.TotalPrice:C2}\n" +
+                                $"Booking Time: {booking.BookingTime:yyyy-MM-dd HH:mm}";
                     using (SmtpClient smtpClient = new SmtpClient(smtpServer, smtpPort))
                     {
                         smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
@@ -141,5 +129,6 @@ namespace Trainbookingsystem.Controllers
                 ViewBag.Error = "An error occurred while sending email: " + ex.Message;
             }
         }
+
     }
 }

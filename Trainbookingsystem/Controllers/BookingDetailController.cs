@@ -89,7 +89,7 @@ namespace Trainbookingsystem.Controllers
             {
                 try
                 {
-                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Retrieve the current user's ID
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                     var existingBooking = await _context.BookingTickets.FindAsync(id);
 
